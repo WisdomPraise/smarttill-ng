@@ -43,6 +43,7 @@ async function sendRealWhatsApp(messageText) {
 
     const response = await fetch(
       `https://twilio.com{process.env.TWILIO_ACCOUNT_SID}/Messages.json`,
+      
       {
         method: "POST",
         headers: {
