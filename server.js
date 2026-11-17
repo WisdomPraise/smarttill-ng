@@ -31,28 +31,26 @@ async function sendRealWhatsApp(messageText) {
     return false;
   }
   try {
-    const auth = Buffer.from(
-      `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`
-    ).toString("base64");
+    const sid = process.env.TWILIO_ACCOUNT_SID.trim();
+    const token = process.env.TWILIO_AUTH_TOKEN.trim();
+    const auth = Buffer.from(sid + ":" + token).toString("base64");
 
     const params = new URLSearchParams({
-      From: process.env.TWILIO_WHATSAPP_FROM,
-      To: process.env.VENDOR_PHONE,
+      From: process.env.TWILIO_WHATSAPP_FROM.trim(),
+      To: process.env.VENDOR_PHONE.trim(),
       Body: messageText,
     });
 
-    const response = await fetch(
-      `https://twilio.com{process.env.TWILIO_ACCOUNT_SID}/Messages.json`,
-      
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${auth}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: params.toString(),
-      }
-    );
+    const twilioUrl = "https://twilio.com" + sid + "/Messages.json";
+
+    const response = await fetch(twilioUrl, {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + auth,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params.toString(),
+    });
 
     const data = await response.json();
     console.log("Twilio WhatsApp Response:", data.sid || data);
