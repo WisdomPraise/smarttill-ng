@@ -40,7 +40,7 @@ async function sendRealWhatsApp(messageText) {
     params.append("To", process.env.VENDOR_PHONE.trim());
     params.append("Body", String(messageText || "SmartTill NG Payment Alert!"));
 
-    const twilioUrl = "https://twilio.com" + sid + "/Messages.json";
+    const twilioUrl = "https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json";
 
     const response = await fetch(twilioUrl, {
       method: "POST",
