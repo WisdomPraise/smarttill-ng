@@ -36,9 +36,9 @@ async function sendRealWhatsApp(messageText) {
     const auth = Buffer.from(sid + ":" + token).toString("base64");
 
     const params = new URLSearchParams();
-    params.append("From", process.env.TWILIO_WHATSAPP_FROM.trim());
     params.append("To", process.env.VENDOR_PHONE.trim());
-    params.append("Body", String(messageText || "SmartTill NG Payment Alert!"));
+    params.append("From", process.env.TWILIO_WHATSAPP_FROM.trim());
+    params.append("ContentSid", (process.env.TWILIO_CONTENT_SID || "HXb131895de71a093156d1062e878de57c").trim());
 
     const twilioUrl = "https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json";
 
