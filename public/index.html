@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartTill NG — Automated Merchant Till & Open Payments</title>
-  <!-- W3C Web Monetization Tag for Zero-Fee Diaspora Micro-Tips -->
   <link rel="monetization" href="https://interledger-test.dev" />
   <style>
     :root {
@@ -12,22 +11,20 @@
       --forest-dark: #0c3120;
       --forest-light: #e8f3ee;
       --bg: #f6f8f7;
-      --card: #ffffff;
       --border: #e2e8e4;
       --text: #111827;
       --muted: #6b7280;
       --accent: #16a34a;
-      --amber: #d97706;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     body { background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    /* LOGIN VIEW */
+    /* LOGIN SCREEN */
     .login-wrap { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; background: #f8faf8; }
-    .login-box { width: 100%; max-width: 400px; text-align: center; }
+    .login-box { width: 100%; max-width: 390px; text-align: center; }
     .brand-logo { display: inline-flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
     .logo-icon { width: 36px; height: 36px; background: var(--forest); color: #fff; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; }
-    .login-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .login-sub { font-size: 14px; color: var(--muted); margin-bottom: 26px; }
     .form-group { text-align: left; margin-bottom: 16px; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
     .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
@@ -44,7 +41,7 @@
     .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #4b5563; cursor: pointer; border: none; background: transparent; text-align: left; width: 100%; }
     .nav-item:hover { background: #f3f4f6; color: var(--text); }
     .nav-item.active { background: var(--forest); color: #ffffff; }
-    .sidebar-footer { padding: 12px; background: var(--forest-light); border-radius: 12px; font-size: 12px; color: var(--forest-dark); }
+    .sidebar-footer { padding: 12px; background: var(--forest-light); border-radius: 12px; font-size: 12px; color: var(--forest-dark); line-height: 1.4; }
     .sidebar-footer strong { display: block; margin-bottom: 4px; }
 
     .main-area { margin-left: 240px; flex: 1; display: flex; flex-direction: column; }
@@ -55,7 +52,7 @@
     .pill-wm { background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; border: 1px solid #fde68a; }
     .avatar { width: 34px; height: 34px; border-radius: 999px; background: var(--forest); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
 
-    .page-content { padding: 32px; max-width: 980px; width: 100%; }
+    .page-content { padding: 32px; max-width: 960px; width: 100%; }
     .page-title { font-size: 26px; font-weight: 800; color: var(--text); }
     .page-sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
 
@@ -63,8 +60,7 @@
     .status-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 22px; align-items: center; }
     .status-chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #fff; border: 1px solid var(--border); color: #374151; }
     .dot-green { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
-    .dot-amber { width: 8px; height: 8px; border-radius: 50%; background: #d97706; }
-    .auth-link { font-size: 12px; font-weight: 700; color: var(--forest); text-decoration: underline; cursor: pointer; background: none; border: none; }
+    .auth-link { font-size: 12px; font-weight: 700; color: var(--forest); text-decoration: underline; }
 
     /* HERO BALANCE CARD */
     .hero-card { background: linear-gradient(135deg, #134e32, #0d3824); color: #ffffff; border-radius: 18px; padding: 28px; box-shadow: 0 12px 24px -8px rgba(18, 69, 45, 0.35); margin-bottom: 20px; }
@@ -90,7 +86,7 @@
     .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .panel-title { font-size: 16px; font-weight: 800; }
     .preset-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
-    .btn-sale { padding: 14px 10px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+    .btn-sale { padding: 14px 10px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-weight: 700; font-size: 14px; cursor: pointer; }
     .btn-sale:hover { border-color: var(--forest); background: var(--forest-light); }
     .btn-sale.featured { background: var(--forest); color: #fff; border-color: var(--forest); }
     .btn-sale.featured:hover { background: var(--forest-dark); }
@@ -122,3 +118,266 @@
     .table-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 20px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th { text-align: left; padding: 14px 18px; background: #f9fafb; color: var(--muted); font-weight: 700; border-bottom: 1px solid var(--border); }
+    td { padding: 14px 18px; border-bottom: 1px solid #f3f4f6; }
+    .wallet-list { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.wallet-row { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; }
+.mono { font-family: monospace; font-size: 12px; color: var(--forest); background: var(--forest-light); padding: 4px 8px; border-radius: 6px; margin-top: 4px; display: inline-block; }
+.view-section { display: none; }
+.view-section.active { display: block; }
+@media (max-width: 768px) {
+.sidebar { display: none; }
+.main-area { margin-left: 0; }
+.split-grid, .preset-grid { grid-template-columns: 1fr 1fr; }
+}
+
+
+✓
+SmartTill
+
+Your business money, under control.
+Email
+Password
+Sign in
+Demo Merchant Account • Pre-connected to Interledger Testnet
+
+✓
+SmartTill
+
+
+⊞  Dashboard
+⇄  Transactions
+◔  Allocation
+▭  Wallets
+⚙  Settings
+
+Interledger Open Payments
+Automated 70/30 split & W3C Web Monetization active.
+
+Mummy Emma's Store • Lagos
+
+⚡ Web Monetized
+Testnet
+E
+
+Hi, Mummy Emma
+ WhatsApp Webhook Connected
+ Open Payments Ready
+↻ Re-Authorize Till Grant
+Total received
+
+0.00
+EUR
+
+≈ ₦0 (1,000:1 Illustrative Naira Scale)
+Sales settled
+0
+
+
+Today's volume
+0.00 EUR
+
+
+🔒 Business Reserve (Restock)
+70%
+
+0.00 EUR
+≈ ₦0 locked for inventory
+💵 Owner Allocation (Daily Profit)
+30%
+
+0.00 EUR
+≈ ₦0 available for spending
+
+Simulate Customer Payment (Live Interledger Split)
+Triggers real ILP transfer + WhatsApp
+₦5,000 (€5)
+₦10,000 (€10)
+₦20,000 (€20)
+₦50,000 (€50)
+🔄 Auto-Collect Pre-Approved Customer Credit Installment — ₦2,000 (€2.00)
+1. Outgoing Grant Verified
+2. Dual Invoices & Quote Created
+3. 70/30 Split Settled
+4. WhatsApp Receipt Dispatched
+Select any payment button above to execute a live Open Payments split.
+💬 WhatsApp Auto-Receipt Sent to Vendor
+Delivered ✓✓
+
+
+
+
+Transactions
+Live Open Payments settlements split across Mummy Emma's wallets.
+
+Time	Source	Total	Reserve Split	Owner Split	ILP Status
+No sales triggered in this session yet. Go to Dashboard to simulate a sale.
+
+Allocation
+How every new sale is split automatically via Open Payments.
+80 / 20
+70 / 30
+60 / 40
+50 / 50
+Business Reserve
+70%
+
+
+Owner Allocation
+30%
+
+A 100.00 sale sends 70.00 to your Reserve and 30.00 to you.
+
+Save allocation
+
+Connected Interledger Wallets
+Three isolated Open Payments wallet addresses enforcing cash-flow discipline.
+
+
+
+1. Main Till (Incoming & Web Monetization)
+$ilp.interledger-test.dev/acb58367
+
+Primary Source
+
+
+
+2. Business Reserve / Restock Savings Box
+Interledger Testnet Restock Wallet (70%)
+
+Locked Savings
+
+
+
+3. Owner Daily Profit Wallet
+Interledger Testnet Profit Wallet (30%)
+
+Spendable
+
+Store & Automation Settings
+Manage Open Payments grant limits and WhatsApp notifications.
+
+Store Name: Mummy Emma's Provision Store (Lagos)
+WhatsApp Notification Channel: Twilio WhatsApp API (Active)
+Web Monetization Pointer: interledger-test.dev
+
+Authorize / Refresh Open Payments Grant
+
+
+
+
+let reservePct = 70;
+let totalEur = 0;
+let reserveEur = 0;
+let ownerEur = 0;
+let salesCount = 0;
+const txHistory = [];
+if (document.referrer.includes("/api/callback") || window.location.hash === "#dashboard") {
+enterApp();
+}
+function enterApp() {
+document.getElementById("login-view").style.display = "none";
+document.getElementById("app-shell").style.display = "flex";
+}
+function switchTab(tabName, btnEl) {
+document.querySelectorAll(".view-section").forEach(el => el.classList.remove("active"));
+document.getElementById("tab-" + tabName).classList.add("active");
+document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+btnEl.classList.add("active");
+}
+function setSplit(pct, btnEl) {
+reservePct = pct;
+document.getElementById("split-slider").value = pct;
+document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+btnEl.classList.add("active");
+updateAllocUI();
+}
+function sliderSplit(val) {
+reservePct = Number(val);
+document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+updateAllocUI();
+}
+function updateAllocUI() {
+const ownerPct = 100 - reservePct;
+document.getElementById("alloc-res-num").textContent = reservePct + "%";
+document.getElementById("alloc-own-num").textContent = ownerPct + "%";
+document.getElementById("alloc-explain").innerHTML =
+A 100.00 sale sends <strong>${reservePct}.00</strong> to your Reserve and <strong>${ownerPct}.00</strong> to you.;
+document.getElementById("badge-reserve-pct").textContent = reservePct + "%";
+document.getElementById("badge-owner-pct").textContent = ownerPct + "%";
+}
+function saveAlloc() {
+document.getElementById("alloc-saved-msg").textContent = "✓ Split rule updated!";
+setTimeout(() => document.getElementById("alloc-saved-msg").textContent = "", 2500);
+}
+window.addEventListener("monetization", () => {
+const pill = document.getElementById("wm-pill");
+pill.textContent = "🟢 Streaming Micro-Tips";
+pill.style.background = "#dcfce7";
+pill.style.color = "#15803d";
+});
+async function runSale(amountCents, sourceLabel) {
+const status = document.getElementById("status-text");
+const steps = ["step-1", "step-2", "step-3", "step-4"];
+steps.forEach(id => document.getElementById(id).className = "step-pill");
+document.getElementById("step-1").classList.add("active");
+status.style.color = "#b45309";
+status.textContent = "⏳ Requesting incoming invoices, quotes & executing Open Payments split...";
+setTimeout(() => {
+document.getElementById("step-1").className = "step-pill done";
+document.getElementById("step-2").classList.add("active");
+}, 600);
+try {
+const res = await fetch("/api/simulate-sale", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ amount: amountCents, source: sourceLabel }),
+});
+const data = await res.json();
+if (!data.success) throw new Error(data.error);
+steps.forEach(id => document.getElementById(id).className = "step-pill done");
+totalEur += data.split.total;
+reserveEur += data.split.restockSaved;
+ownerEur += data.split.dailyProfit;
+salesCount += 1;
+document.getElementById("hero-eur").textContent = totalEur.toFixed(2);
+document.getElementById("hero-ngn").textContent =
+≈ ₦${(totalEur * 1000).toLocaleString()} (1,000:1 Illustrative Naira Scale);
+document.getElementById("stat-count").textContent = salesCount;
+document.getElementById("stat-today").textContent = ${totalEur.toFixed(2)} EUR;
+document.getElementById("card-reserve-eur").innerHTML =
+${reserveEur.toFixed(2)} <span style="font-size:14px;color:var(--muted);">EUR</span>;
+document.getElementById("card-reserve-ngn").textContent =
+≈ ₦${(reserveEur * 1000).toLocaleString()} locked for inventory;
+document.getElementById("card-owner-eur").innerHTML =
+${ownerEur.toFixed(2)} <span style="font-size:14px;color:var(--muted);">EUR</span>;
+document.getElementById("card-owner-ngn").textContent =
+≈ ₦${(ownerEur * 1000).toLocaleString()} available for spending;
+const waBox = document.getElementById("wa-preview");
+waBox.style.display = "block";
+document.getElementById("wa-body").innerHTML =
+<strong>[${sourceLabel}]</strong> Hello Mummy Emma! Received <strong>₦${(data.split.total * 1000).toLocaleString()}</strong> (€${data.split.total.toFixed(2)}).<br/> +
+🔒 <strong>₦${(data.split.restockSaved * 1000).toLocaleString()}</strong> moved to Business Reserve •  +
+💵 <strong>₦${(data.split.dailyProfit * 1000).toLocaleString()}</strong> moved to Owner Allocation.;
+document.getElementById("wa-tx").textContent =
+ILP Outgoing Tx: ${data.transactions.restockId};
+txHistory.unshift({
+time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+source: sourceLabel,
+total: data.split.total.toFixed(2),
+reserve: data.split.restockSaved.toFixed(2),
+owner: data.split.dailyProfit.toFixed(2),
+});
+renderTxTable();
+status.style.color = "#15803d";
+status.textContent = "✅ Settled live on Interledger Testnet & dispatched WhatsApp alert!";
+} catch (err) {
+status.style.color = "#dc2626";
+status.textContent = "❌ " + err.message + " (Click 'Re-Authorize Till Grant' above if token expired)";
+}
+}
+function renderTxTable() {
+const tbody = document.getElementById("tx-table-body");
+tbody.innerHTML = txHistory.map(tx => `
+${tx.time}
+${tx.source}€\({tx.total} (₦\){(tx.total * 1000).toLocaleString()})+€${tx.reserve}+€${tx.owner}Settled`).join("");
+}
