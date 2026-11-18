@@ -3,187 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SmartTill NG - Mummy Emma's Provision Store</title>
-  <!-- Web Monetization Tag for Diaspora Support & Zero-Fee Micro-Tips -->
+  <title>SmartTill NG — Automated Merchant Till & Open Payments</title>
+  <!-- W3C Web Monetization Tag for Zero-Fee Diaspora Micro-Tips -->
   <link rel="monetization" href="https://interledger-test.dev" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-    body { background: #f1f5f9; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 24px 16px; color: #0f172a; }
-    .phone-card { width: 100%; max-width: 420px; background: #ffffff; border-radius: 28px; box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.12); overflow: hidden; border: 1px solid #e2e8f0; }
-    .header { background: linear-gradient(135deg, #047857, #065f46); color: #ffffff; padding: 24px; }
-    .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #a7f3d0; font-weight: 700; }
-    .title { font-size: 22px; font-weight: 800; margin-top: 4px; }
-    .subtitle { font-size: 12px; color: #d1fae5; margin-top: 2px; }
-    .wm-badge { font-size: 11px; background: rgba(6, 78, 59, 0.85); border: 1px solid #34d399; padding: 5px 10px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
-    .wm-active { background: #16a34a; border-color: #bbf7d0; }
-    .balance-box { margin-top: 20px; background: rgba(6, 78, 59, 0.55); border-radius: 18px; padding: 16px; }
-    .balance-label { font-size: 12px; color: #a7f3d0; }
-    .balance-row { display: flex; align-items: baseline; justify-content: space-between; margin-top: 4px; }
-    .balance-ngn { font-size: 32px; font-weight: 800; }
-    .balance-eur { font-size: 12px; color: #a7f3d0; }
-    .content { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
-    .section-head { display: flex; justify-content: space-between; align-items: center; }
-    .section-title { font-size: 14px; font-weight: 700; color: #334155; }
-    .rule-pill { font-size: 11px; font-weight: 700; color: #047857; background: #ecfdf5; padding: 3px 8px; border-radius: 6px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .wallet-card { border-radius: 18px; padding: 16px; }
-    .restock-card { background: #fffbeb; border: 1px solid #fde68a; }
-    .profit-card { background: #eff6ff; border: 1px solid #bfdbfe; }
-    .card-top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; }
-    .restock-card .card-top { color: #92400e; }
-    .profit-card .card-top { color: #1e40af; }
-    .pct-badge { font-size: 10px; padding: 2px 6px; border-radius: 5px; font-weight: 800; }
-    .restock-card .pct-badge { background: #fde68a; color: #78350f; }
-    .profit-card .pct-badge { background: #bfdbfe; color: #1e3a8a; }
-    .card-ngn { font-size: 21px; font-weight: 800; margin-top: 10px; color: #0f172a; }
-    .card-eur { font-size: 12px; margin-top: 2px; }
-    .restock-card .card-eur { color: #b45309; }
-    .profit-card .card-eur { color: #1d4ed8; }
-    .divider { border-top: 1px solid #f1f5f9; padding-top: 16px; }
-    .btn-label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 10px; }
-    .btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
-    button { cursor: pointer; border: none; border-radius: 12px; font-weight: 700; transition: transform 0.1s, opacity 0.15s; }
-    button:active { transform: scale(0.97); }
-    .btn-sale { padding: 12px 8px; background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; font-size: 14px; }
-    .btn-sale:hover { background: #ecfdf5; border-color: #10b981; }
-    .btn-primary { padding: 12px 8px; background: #059669; color: #ffffff; font-size: 14px; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25); }
-    .btn-primary:hover { background: #047857; }
-    .btn-credit { width: 100%; padding: 12px; background: #f0fdf4; border: 1px dashed #16a34a; color: #15803d; font-size: 13px; margin-top: 4px; }
-    .btn-credit:hover { background: #dcfce7; }
-    .status { font-size: 12px; text-align: center; color: #64748b; min-height: 18px; margin-top: 8px; font-weight: 600; }
-    .wa-box { display: none; background: #e7ffdb; border: 1px solid #86efac; border-radius: 16px; padding: 14px; font-size: 12px; color: #1e293b; line-height: 1.5; }
-    .wa-title { font-weight: 800; color: #166534; margin-bottom: 4px; }
-    .tx-id { font-size: 10px; color: #475569; margin-top: 8px; word-break: break-all; }
-  </style>
-</head>
-<body>
-
-  <div class="phone-card">
-    <div class="header">
-      <div class="header-top">
-        <div>
-          <p class="tag">SmartTill NG • Open Payments</p>
-          <h1 class="title">Mummy Emma's Store</h1>
-          <p class="subtitle">Iju-Ishaga Market, Lagos</p>
-        </div>
-        <span id="wm-badge" class="wm-badge">⚡ Web Monetized</span>
-      </div>
-
-      <div class="balance-box">
-        <p class="balance-label">Total Till Inflow Today</p>
-        <div class="balance-row">
-          <h2 id="total-ngn" class="balance-ngn">₦0</h2>
-          <span id="total-eur" class="balance-eur">(€0.00 ILP Testnet)</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="section-head">
-        <h3 class="section-title">Automatic Open Payments Split</h3>
-        <span class="rule-pill">70% / 30% Rule</span>
-      </div>
-
-      <div class="grid-2">
-        <div class="wallet-card restock-card">
-          <div class="card-top">
-            <span>🔒 Restock Box</span>
-            <span class="pct-badge">70%</span>
-          </div>
-          <p id="restock-ngn" class="card-ngn">₦0</p>
-          <p id="restock-eur" class="card-eur">€0.00 saved</p>
-        </div>
-
-        <div class="wallet-card profit-card">
-          <div class="card-top">
-            <span>💵 Daily Profit</span>
-            <span class="pct-badge">30%</span>
-          </div>
-          <p id="profit-ngn" class="card-ngn">₦0</p>
-          <p id="profit-eur" class="card-eur">€0.00 ready</p>
-        </div>
-      </div>
-
-      <div class="divider">
-        <span class="btn-label">1. Simulate Customer Purchase (Naira → ILP)</span>
-        <div class="btn-grid">
-          <button class="btn-sale" onclick="triggerSale(500, 'Counter Sale')">₦5,000</button>
-          <button class="btn-primary" onclick="triggerSale(1000, 'Counter Sale')">₦10,000</button>
-          <button class="btn-sale" onclick="triggerSale(2000, 'Counter Sale')">₦20,000</button>
-        </div>
-
-        <span class="btn-label" style="margin-top: 12px;">2. Consent-Based Credit Recovery (Open Payments Grant)</span>
-        <button class="btn-credit" onclick="triggerSale(200, 'Auto-Credit Installment (Customer: Chinedu)')">
-          🔄 Auto-Collect Approved Credit Installment (₦2,000)
-        </button>
-
-        <p id="status-msg" class="status">Tap an amount to trigger live Interledger split</p>
-      </div>
-
-      <div id="whatsapp-box" class="wa-box">
-        <div class="wa-title">💬 WhatsApp Auto-Alert Sent to Vendor</div>
-        <p id="whatsapp-text"></p>
-        <p id="tx-ids" class="tx-id"></p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    let totalEur = 0;
-    let restockEur = 0;
-    let profitEur = 0;
-
-    window.addEventListener("monetization", () => {
-      const badge = document.getElementById("wm-badge");
-      badge.textContent = "🟢 Streaming Micro-Tips";
-      badge.classList.add("wm-active");
-    });
-
-    async function triggerSale(amountCents, sourceLabel) {
-      const status = document.getElementById("status-msg");
-      status.textContent = "⏳ Routing Open Payments split across wallets...";
-      status.style.color = "#d97706";
-
-      try {
-        const res = await fetch("/api/simulate-sale", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: amountCents }),
-        });
-        const data = await res.json();
-
-        if (!data.success) throw new Error(data.error);
-
-        totalEur += data.split.total;
-        restockEur += data.split.restockSaved;
-        profitEur += data.split.dailyProfit;
-
-        document.getElementById("total-ngn").textContent = `₦${(totalEur * 1000).toLocaleString()}`;
-        document.getElementById("total-eur").textContent = `(€${totalEur.toFixed(2)} ILP Testnet)`;
-
-        document.getElementById("restock-ngn").textContent = `₦${(restockEur * 1000).toLocaleString()}`;
-        document.getElementById("restock-eur").textContent = `€${restockEur.toFixed(2)} saved`;
-
-        document.getElementById("profit-ngn").textContent = `₦${(profitEur * 1000).toLocaleString()}`;
-        document.getElementById("profit-eur").textContent = `€${profitEur.toFixed(2)} ready`;
-
-        const waBox = document.getElementById("whatsapp-box");
-        waBox.style.display = "block";
-        document.getElementById("whatsapp-text").innerHTML =
-          `<b>[${sourceLabel}]</b> Good day Mummy Emma! You received <b>₦${(data.split.total * 1000).toLocaleString()}</b> (€${data.split.total.toFixed(2)}).<br/>` +
-          `🔒 <b>₦${(data.split.restockSaved * 1000).toLocaleString()}</b> locked for market restock.<br/>` +
-          `💵 <b>₦${(data.split.dailyProfit * 1000).toLocaleString()}</b> sent to your daily profit.`;
-        document.getElementById("tx-ids").textContent =
-          `ILP Restock Tx: ${data.transactions.restockId}`;
-
-        status.textContent = "✅ Split settled live on Interledger!";
-        status.style.color = "#047857";
-      } catch (err) {
-        status.textContent = "❌ " + err.message;
-        status.style.color = "#dc2626";
-      }
+    :root {
+      --forest: #12452d;
+      --forest-dark: #0c3120;
+      --forest-light: #e8f3ee;
+      --bg: #f6f8f7;
+      --card: #ffffff;
+      --border: #e2e8e4;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #16a34a;
+      --amber: #d97706;
     }
-  </script>
-</body>
-</html>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* LOGIN VIEW */
+    .login-wrap { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; background: #f8faf8; }
+    .login-box { width: 100%; max-width: 400px; text-align: center; }
+    .brand-logo { display: inline-flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .logo-icon { width: 36px; height: 36px; background: var(--forest); color: #fff; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; }
+    .login-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .form-group { text-align: left; margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
+    .form-input:focus { border-color: var(--forest); }
+    .btn-signin { width: 100%; padding: 13px; background: var(--forest); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 6px; }
+    .btn-signin:hover { background: var(--forest-dark); }
+    .login-hint { font-size: 12px; color: var(--muted); margin-top: 16px; }
+
+    /* APP SHELL */
+    .app-shell { display: none; min-height: 100vh; }
+    .sidebar { width: 240px; background: #ffffff; border-right: 1px solid var(--border); padding: 22px 14px; display: flex; flex-direction: column; justify-content: space-between; position: fixed; top: 0; bottom: 0; left: 0; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; padding: 0 10px 24px; }
+    .nav-list { display: flex; flex-direction: column; gap: 4px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #4b5563; cursor: pointer; border: none; background: transparent; text-align: left; width: 100%; }
+    .nav-item:hover { background: #f3f4f6; color: var(--text); }
+    .nav-item.active { background: var(--forest); color: #ffffff; }
+    .sidebar-footer { padding: 12px; background: var(--forest-light); border-radius: 12px; font-size: 12px; color: var(--forest-dark); }
+    .sidebar-footer strong { display: block; margin-bottom: 4px; }
+
+    .main-area { margin-left: 240px; flex: 1; display: flex; flex-direction: column; }
+    .topbar { height: 64px; background: #ffffff; border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .store-name { font-size: 14px; font-weight: 600; color: #374151; }
+    .top-badges { display: flex; align-items: center; gap: 10px; }
+    .pill-testnet { background: #dcfce7; color: #15803d; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; border: 1px solid #bbf7d0; }
+    .pill-wm { background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; border: 1px solid #fde68a; }
+    .avatar { width: 34px; height: 34px; border-radius: 999px; background: var(--forest); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+
+    .page-content { padding: 32px; max-width: 980px; width: 100%; }
+    .page-title { font-size: 26px; font-weight: 800; color: var(--text); }
+    .page-sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+    /* STATUS PILLS */
+    .status-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 22px; align-items: center; }
+    .status-chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #fff; border: 1px solid var(--border); color: #374151; }
+    .dot-green { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
+    .dot-amber { width: 8px; height: 8px; border-radius: 50%; background: #d97706; }
+    .auth-link { font-size: 12px; font-weight: 700; color: var(--forest); text-decoration: underline; cursor: pointer; background: none; border: none; }
+
+    /* HERO BALANCE CARD */
+    .hero-card { background: linear-gradient(135deg, #134e32, #0d3824); color: #ffffff; border-radius: 18px; padding: 28px; box-shadow: 0 12px 24px -8px rgba(18, 69, 45, 0.35); margin-bottom: 20px; }
+    .hero-label { font-size: 13px; color: #a7f3d0; font-weight: 600; }
+    .hero-amount-row { display: flex; align-items: baseline; gap: 10px; margin: 8px 0 4px; }
+    .hero-amount { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; }
+    .hero-curr { font-size: 18px; font-weight: 700; color: #a7f3d0; }
+    .hero-ngn { font-size: 13px; color: #d1fae5; opacity: 0.9; }
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.14); margin-top: 22px; padding-top: 16px; }
+    .stat-label { font-size: 12px; color: #a7f3d0; }
+    .stat-val { font-size: 18px; font-weight: 800; margin-top: 2px; }
+
+    /* SPLIT CARDS */
+    .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+    .split-card { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .split-top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; color: #4b5563; }
+    .split-pct { background: #f3f4f6; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #111827; }
+    .split-val { font-size: 26px; font-weight: 800; margin-top: 12px; }
+    .split-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* SIMULATE POS & LIVE TRACKER */
+    .action-panel { background: #ffffff; border: 1px solid var(--border); border-radius: 18px; padding: 24px; margin-bottom: 22px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .panel-title { font-size: 16px; font-weight: 800; }
+    .preset-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .btn-sale { padding: 14px 10px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+    .btn-sale:hover { border-color: var(--forest); background: var(--forest-light); }
+    .btn-sale.featured { background: var(--forest); color: #fff; border-color: var(--forest); }
+    .btn-sale.featured:hover { background: var(--forest-dark); }
+    .btn-credit { width: 100%; padding: 13px; border-radius: 12px; border: 1.5px dashed var(--forest); background: #f0fdf4; color: var(--forest-dark); font-weight: 700; font-size: 13px; cursor: pointer; }
+    .btn-credit:hover { background: #dcfce7; }
+
+    .tracker-bar { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .step-pill { font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 8px; background: #f3f4f6; color: #6b7280; }
+    .step-pill.done { background: #dcfce7; color: #15803d; }
+    .step-pill.active { background: #fef3c7; color: #b45309; }
+
+    .wa-preview { display: none; margin-top: 16px; background: #e7ffdb; border: 1px solid #86efac; border-radius: 14px; padding: 16px; font-size: 13px; line-height: 1.5; }
+    .wa-header { font-weight: 800; color: #166534; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .tx-code { font-size: 11px; color: #4b5563; margin-top: 8px; font-family: monospace; word-break: break-all; }
+
+    /* ALLOCATION VIEW */
+    .alloc-card { background: #ffffff; border: 1px solid var(--border); border-radius: 18px; padding: 28px; max-width: 580px; margin-top: 20px; }
+    .preset-pills { display: flex; gap: 10px; margin-bottom: 20px; }
+    .pill-btn { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .pill-btn.active { background: var(--forest); color: #fff; border-color: var(--forest); }
+    .alloc-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .alloc-box-dark { background: var(--forest); color: #fff; padding: 20px; border-radius: 14px; }
+    .alloc-box-light { background: #f3f6f4; color: var(--text); padding: 20px; border-radius: 14px; }
+    .alloc-box-label { font-size: 12px; opacity: 0.85; font-weight: 600; }
+    .alloc-box-num { font-size: 32px; font-weight: 800; margin-top: 6px; }
+    .slider { width: 100%; accent-color: var(--forest); margin: 10px 0 14px; cursor: pointer; }
+
+    /* TABLE & WALLETS */
+    .table-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 14px 18px; background: #f9fafb; color: var(--muted); font-weight: 700; border-bottom: 1px solid var(--border); }
